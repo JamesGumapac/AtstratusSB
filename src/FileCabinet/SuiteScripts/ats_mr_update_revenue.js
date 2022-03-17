@@ -58,7 +58,7 @@ define(['N/record', 'N/search'],
 
 
             var accountPeriod = searchResult.values.custrecord_ats_accounting_period.text
-            // log.audit(`MIS ID:  ${id} | PROPERTY: ${property} | ACCOUNTING PERIOD: ${accountPeriod}`)
+            log.audit(`MIS ID:  ${id} | PROPERTY: ${property} | ACCOUNTING PERIOD: ${accountPeriod}`)
 
             var periodFinal = accountPeriod.substring(accountPeriod.length - 8, accountPeriod.length)
             var invoiceSearchObj = search.load({
@@ -77,7 +77,7 @@ define(['N/record', 'N/search'],
             }));
 
             var searchResultCount = invoiceSearchObj.runPaged().count;
-            log.debug('Search Result Count', searchResult)
+          //  log.debug('Search Result Count', searchResult)
             if (searchResultCount > 0) {
 
                 var misRec = record.load({
@@ -87,9 +87,7 @@ define(['N/record', 'N/search'],
                 });
 
                 invoiceSearchObj.run().each(function (result) {
-                    var invoiceId = result.getValue({
-                        name: 'internalid'
-                    })
+
                     var accountingPeriod = result.getValue({
                         name: 'periodname',
                         join: 'accountingPeriod',
@@ -108,7 +106,7 @@ define(['N/record', 'N/search'],
                         join: 'account',
                         summary: 'GROUP'
                     })
-                    log.debug(`Invoice Id: ${invoiceId} | APeriod: ${accountingPeriod} | revCategory: ${revCategory} | amount: ${amount}`)
+                    log.debug(`APeriod: ${accountingPeriod} | revCategory: ${revCategory} | amount: ${amount}`)
 
 
 
