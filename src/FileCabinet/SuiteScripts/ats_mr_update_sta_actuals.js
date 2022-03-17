@@ -50,6 +50,18 @@ define(['N/record', 'N/search'],
             var bedSold = 0
             var bedSoldTotal = 0;
             var roomSoldTotal = 0
+            var averageRoomRateGP = 0
+            var averageRoomRateFB = 0
+            var averageRoomRateHB = 0
+            var averageRoomRateBB = 0
+            var averageRoomRateDR = 0
+            var revRoomsGP = 0
+            var revRoomsFB = 0
+            var revRoomsHB = 0
+            var revRoomsBB = 0
+            var revRoomsDR = 0
+            var revId;
+
 
             let searchResult = JSON.parse(context.value);
             //log.debug('Search Result', searchResult)
@@ -87,6 +99,50 @@ define(['N/record', 'N/search'],
                     id: id,
                     isDynamic: true
                 });
+                var misRecYear = misRec.getValue('custrecord_ats_sta_year')
+                var misRecMonth = misRec.getValue('custrecord_ats_sta_month')
+                var misProperty = misRec.getValue('custrecord_ats_sta_property')
+                var revRecSearhObj = search.load({
+                    id: 'customsearch_ats_rev_search_for_sta_updt'
+                })
+                revRecSearhObj.filters.push(search.createFilter({
+                    name: 'custrecord_ats_mis_month',
+                    operator: 'anyof',
+                    values: misRecMonth
+                }));
+                revRecSearhObj.filters.push(search.createFilter({
+                    name: 'custrecord_ats_mis_year',
+                    operator: 'anyof',
+                    values: misRecYear
+                }));
+                revRecSearhObj.filters.push(search.createFilter({
+                    name: 'custrecord_ats_mis_property',
+                    operator: 'anyof',
+                    values: misProperty
+                }));
+
+                var revRecSearhObjCount = revRecSearhObj.runPaged().count;
+                if (revRecSearhObjCount > 0) {
+                    revRecSearhObj.run().each(function (result) {
+                        revId = result.id
+                        revRoomsGP = result.getValue({
+                            name: 'custrecord32'
+                        })
+                        revRoomsBB = result.getValue({
+                            name: 'custrecord41'
+                        })
+                        revRoomsDR = result.getValue({
+                            name: 'custrecord44'
+                        })
+                        revRoomsFB = result.getValue({
+                            name: 'custrecord35'
+                        })
+                        revRoomsHB = result.getValue({
+                            name: 'custrecord38'
+                        })
+                        return true;
+                    });
+                }
 
                 invoiceSearchObj.run().each(function (result) {
                     var accountingPeriod = result.getValue({
@@ -131,21 +187,21 @@ define(['N/record', 'N/search'],
                             value: bedSold
                         })
 
+                        averageRoomRateGP = revRoomsGP / roomSold
+                        try {
+                            if (averageRoomRateGP > 0) {
+                                log.audit('Average room rate GP', averageRoomRateGP)
+                                misRec.setValue({
+                                    fieldId: 'custrecord_ats_sta_average_room_rate',
+                                    value: averageRoomRateGP.toFixed(2)
+                                })
 
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord2': roomSold,
-                        //         'custrecord12': bedSold,
-                        //
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                            }
+                        } catch (e) {
+                            log.error(e.message)
+                        }
+
+
 
                     }
                     if (revCategory.includes('FB') === true) {
@@ -158,20 +214,20 @@ define(['N/record', 'N/search'],
                             fieldId: 'custrecord14',
                             value: bedSold
                         })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord4': roomSold,
-                        //         'custrecord14': bedSold
-                        //
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        averageRoomRateFB = revRoomsFB / roomSold
+                        try {
+                            if (averageRoomRateFB > 0) {
+                                log.audit('Average room rate FB', averageRoomRateFB)
+                                misRec.setValue({
+                                    fieldId: 'custrecord255',
+                                    value: averageRoomRateFB.toFixed(2)
+                                })
+
+                            }
+                        } catch (e) {
+                            log.error(e.message)
+                        }
+
                     }
                     if (revCategory.includes('HB') === true) {
                         log.debug('HB')
@@ -183,21 +239,20 @@ define(['N/record', 'N/search'],
                             fieldId: 'custrecord16',
                             value: bedSold
                         })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord6': roomSold,
-                        //         'custrecord16': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        averageRoomRateHB = revRoomsHB / roomSold
+                        try {
+                            if (averageRoomRateHB > 0) {
+                                log.audit('Average room rate HB', averageRoomRateHB)
+                                misRec.setValue({
+                                    fieldId: 'custrecord256',
+                                    value: averageRoomRateHB.toFixed(2)
+                                })
+
+                            }
+                        } catch (e) {
+                            log.error(e.message)
+                        }
+
                     }
                     if (revCategory.includes('BB') === true) {
                         log.debug('BB')
@@ -209,21 +264,19 @@ define(['N/record', 'N/search'],
                             fieldId: 'custrecord18',
                             value: bedSold
                         })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord8': roomSold,
-                        //         'custrecord18': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        averageRoomRateBB = revRoomsBB / roomSold
+                        try {
+                            if (averageRoomRateBB > 0) {
+                                log.audit('Average room rate BB', averageRoomRateBB)
+                                misRec.setValue({
+                                    fieldId: 'custrecord257',
+                                    value: averageRoomRateBB.toFixed(2)
+                                })
+
+                            }
+                        } catch (e) {
+                            log.error(e.message)
+                        }
 
                     }
                     if (revCategory.includes('DR') === true) {
@@ -236,21 +289,20 @@ define(['N/record', 'N/search'],
                             fieldId: 'custrecord20',
                             value: bedSold
                         })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord10': roomSold,
-                        //         'custrecord20': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        averageRoomRateDR = revRoomsDR / roomSold
+                        try {
+                            if (averageRoomRateDR > 0) {
+                                log.audit('Average room rate DR', averageRoomRateDR)
+                                misRec.setValue({
+                                    fieldId: 'custrecord258',
+                                    value: averageRoomRateDR.toFixed(2)
+                                })
+                            }
+                        } catch (e) {
+                            log.error(e.message)
+                        }
+
+
                     }
 
 
@@ -278,12 +330,13 @@ define(['N/record', 'N/search'],
                 var roomsAvailableActual = 0
                 roomSoldActual = misRec.getValue('custrecord_ats_sta_room_sold')
                 roomsAvailableActual = misRec.getValue('custrecord_ats_sta_rooms_available')
+
                 try {
                     var roomOccupancyActual = 0.00;
                     var roomOccupancyBduge = 0.00;
                     var roomOccupancyForecast = 0.00;
                     roomOccupancyActual = (roomSoldActual / roomsAvailableActual) * 100
-                    log.audit('Room occupancy', roomOccupancyActual)
+                    //   log.audit('Room occupancy', roomOccupancyActual)
                     if (roomOccupancyActual != null) {
                         misRec.setValue({
                             fieldId: 'custrecord_ats_sta_room_occupancy',
@@ -317,14 +370,13 @@ define(['N/record', 'N/search'],
                             value: roomOccupancyForecast.toFixed(2)
                         })
                     }
+
+
                 } catch (e) {
                     log.error(e.message, id)
                 }
 
-
-
-
-
+                log.debug('AAAMis rec', misRec)
                 var staId
                 if (misRec) {
                     try {
