@@ -60,7 +60,8 @@ define(['N/record', 'N/search'],
             var revRoomsHB = 0
             var revRoomsBB = 0
             var revRoomsDR = 0
-            var revId;
+            var revRoomsActualTotal = 0;
+            var revParActual = 0;
 
 
             let searchResult = JSON.parse(context.value);
@@ -140,9 +141,14 @@ define(['N/record', 'N/search'],
                         revRoomsHB = result.getValue({
                             name: 'custrecord38'
                         })
+                        revRoomsActualTotal = result.getValue({
+                            name: 'custrecord_ats_rev_room'
+                        })
                         return true;
                     });
                 }
+
+
 
                 invoiceSearchObj.run().each(function (result) {
                     var accountingPeriod = result.getValue({
@@ -190,7 +196,7 @@ define(['N/record', 'N/search'],
                         averageRoomRateGP = revRoomsGP / roomSold
                         try {
                             if (averageRoomRateGP > 0) {
-                                log.audit('Average room rate GP', averageRoomRateGP)
+                                //log.audit('Average room rate GP', averageRoomRateGP)
                                 misRec.setValue({
                                     fieldId: 'custrecord_ats_sta_average_room_rate',
                                     value: averageRoomRateGP.toFixed(2)
@@ -217,7 +223,7 @@ define(['N/record', 'N/search'],
                         averageRoomRateFB = revRoomsFB / roomSold
                         try {
                             if (averageRoomRateFB > 0) {
-                                log.audit('Average room rate FB', averageRoomRateFB)
+                               // log.audit('Average room rate FB', averageRoomRateFB)
                                 misRec.setValue({
                                     fieldId: 'custrecord255',
                                     value: averageRoomRateFB.toFixed(2)
@@ -242,7 +248,7 @@ define(['N/record', 'N/search'],
                         averageRoomRateHB = revRoomsHB / roomSold
                         try {
                             if (averageRoomRateHB > 0) {
-                                log.audit('Average room rate HB', averageRoomRateHB)
+                            //    log.audit('Average room rate HB', averageRoomRateHB)
                                 misRec.setValue({
                                     fieldId: 'custrecord256',
                                     value: averageRoomRateHB.toFixed(2)
@@ -267,7 +273,7 @@ define(['N/record', 'N/search'],
                         averageRoomRateBB = revRoomsBB / roomSold
                         try {
                             if (averageRoomRateBB > 0) {
-                                log.audit('Average room rate BB', averageRoomRateBB)
+                            //    log.audit('Average room rate BB', averageRoomRateBB)
                                 misRec.setValue({
                                     fieldId: 'custrecord257',
                                     value: averageRoomRateBB.toFixed(2)
@@ -292,7 +298,7 @@ define(['N/record', 'N/search'],
                         averageRoomRateDR = revRoomsDR / roomSold
                         try {
                             if (averageRoomRateDR > 0) {
-                                log.audit('Average room rate DR', averageRoomRateDR)
+                             //   log.audit('Average room rate DR', averageRoomRateDR)
                                 misRec.setValue({
                                     fieldId: 'custrecord258',
                                     value: averageRoomRateDR.toFixed(2)
@@ -333,8 +339,17 @@ define(['N/record', 'N/search'],
 
                 try {
                     var roomOccupancyActual = 0.00;
-                    var roomOccupancyBduge = 0.00;
+                    var roomOccupancyBduget = 0.00;
                     var roomOccupancyForecast = 0.00;
+                    revParActual = revRoomsActualTotal/roomsAvailableActual
+                    if(revParActual > 0){
+                        log.audit('revPar Actual', Math.ceil(revParActual) )
+                        misRec.setValue({
+                            fieldId: 'custrecord288',
+                            value: Math.ceil(revParActual)
+                        })
+                    }
+
                     roomOccupancyActual = (roomSoldActual / roomsAvailableActual) * 100
                     //   log.audit('Room occupancy', roomOccupancyActual)
                     if (roomOccupancyActual != null) {
@@ -371,12 +386,11 @@ define(['N/record', 'N/search'],
                         })
                     }
 
-
                 } catch (e) {
                     log.error(e.message, id)
                 }
 
-                log.debug('AAAMis rec', misRec)
+                log.debug('Statistic rec', misRec)
                 var staId
                 if (misRec) {
                     try {

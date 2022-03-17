@@ -48,6 +48,7 @@ define(['N/record', 'N/search'],
         const map = (context) => {
             var roomsActualTotal = 0;
             var extrasTotal = 0;
+            var grossRevenue = 0
 
             let searchResult = JSON.parse(context.value);
             //log.debug('Search Result', searchResult)
@@ -268,6 +269,8 @@ define(['N/record', 'N/search'],
                     return true;
 
                 });
+                 grossRevenue = roomsActualTotal + extrasTotal;
+                 log.debug('Gross Revenue')
                 try {
                     misRec.setValue({
                         fieldId: 'custrecord_ats_rev_room',
@@ -278,74 +281,15 @@ define(['N/record', 'N/search'],
                         fieldId: 'custrecord_ats_rev_extras',
                         value: extrasTotal
                     })
+                    misRec.setValue({
+                        fieldId: 'custrecord_ats_rev_gross_revenue',
+                        value: grossRevenue
+                    })
                 } catch (e) {
                     log.error(e.message, id)
                 }
-                //
-                // log.debug('Room Sold Total', roomSoldTotal)
-                // log.debug('Bed Sold Total', bedSoldTotal)
-                // misRec.setValue({
-                //     fieldId: 'custrecord_ats_sta_room_sold',
-                //     value: roomSoldTotal
-                // })
-                //
-                // misRec.setValue({
-                //     fieldId: 'custrecord_ats_sta_bed_sold',
-                //     value: bedSoldTotal
-                // })
-                // // misRec.save({
-                // //     ignoreMandatoryFields: true
-                // // });
-                // //Set Room Occupany Actual
-                // var roomSoldActual = 0
-                // var roomsAvailableActual = 0
-                // roomSoldActual = misRec.getValue('custrecord_ats_sta_room_sold')
-                // roomsAvailableActual = misRec.getValue('custrecord_ats_sta_rooms_available')
-                // try {
-                //     var roomOccupancyActual = 0.00;
-                //     var roomOccupancyBduge = 0.00;
-                //     var roomOccupancyForecast = 0.00;
-                //     roomOccupancyActual = (roomSoldActual / roomsAvailableActual) * 100
-                //     log.audit('Room occupancy', roomOccupancyActual)
-                //     if (roomOccupancyActual != null) {
-                //         misRec.setValue({
-                //             fieldId: 'custrecord_ats_sta_room_occupancy',
-                //             value: roomOccupancyActual.toFixed(2)
-                //         })
-                //     }
-                //
-                //     // set Room Occupancy Budget
-                //     var roomSoldBudget = 0
-                //     var roomsAvailableBudget = 0
-                //     roomSoldBudget = misRec.getValue('custrecord85')
-                //     roomsAvailableBudget = misRec.getValue('custrecord84')
-                //     roomOccupancyBduget = (roomSoldBudget / roomsAvailableBudget) * 100
-                //     log.debug('Room occupancy Budget', roomOccupancyBduget)
-                //     if (roomOccupancyBduget != null) {
-                //         misRec.setValue({
-                //             fieldId: 'custrecord245',
-                //             value: roomOccupancyBduget.toFixed(2)
-                //         })
-                //     }
-                //     // set value for forecast room occupancy
-                //     var roomSoldForecast = 0
-                //     var roomsAvailableForecast = 0
-                //     roomSoldForecast = misRec.getValue('custrecord243')
-                //     roomsAvailableForecast = misRec.getValue('custrecord252')
-                //     roomOccupancyForecast = (roomSoldForecast / roomsAvailableForecast) * 100
-                //     log.debug('Room occupancy', roomOccupancyForecast)
-                //     if (roomOccupancyForecast != null) {
-                //         misRec.setValue({
-                //             fieldId: 'custrecord246',
-                //             value: roomOccupancyForecast.toFixed(2)
-                //         })
-                //     }
-                // } catch (e) {
-                //     log.error(e.message, id)
-                // }
-                //
-                //
-                // var staId
+
+
                 log.debug(`Extras and Rooms Total`, `${roomsActualTotal} , ${extrasTotal}`  )
                 if (misRec) {
                     try {
