@@ -61,7 +61,10 @@ define(['N/record', 'N/search'],
             var revRoomsBB = 0
             var revRoomsDR = 0
             var revRoomsActualTotal = 0;
+            var revGrossRevenue = 0
+            var revTourSalesActual = 0;
             var revParActual = 0;
+            var revPorActual = 0;
 
 
             let searchResult = JSON.parse(context.value);
@@ -143,6 +146,12 @@ define(['N/record', 'N/search'],
                         })
                         revRoomsActualTotal = result.getValue({
                             name: 'custrecord_ats_rev_room'
+                        })
+                        revGrossRevenue = result.getValue({
+                            name: 'custrecord_ats_rev_gross_revenue'
+                        })
+                        revTourSalesActual = result.getValue({
+                            name: 'custrecord80'
                         })
                         return true;
                     });
@@ -343,10 +352,19 @@ define(['N/record', 'N/search'],
                     var roomOccupancyForecast = 0.00;
                     revParActual = revRoomsActualTotal/roomsAvailableActual
                     if(revParActual > 0){
-                        log.audit('revPar Actual', Math.ceil(revParActual) )
+                      //  log.audit('revPar Actual', Math.ceil(revParActual) )
                         misRec.setValue({
                             fieldId: 'custrecord288',
                             value: Math.ceil(revParActual)
+                        })
+                    }
+                    log.audit('Rev GR and Rev Tour Sale', `${revGrossRevenue}, ${revTourSalesActual} `)
+                    revPorActual = revGrossRevenue - revTourSalesActual
+                    if(revPorActual > 0){
+                        log.audit('revPor Actual', Math.ceil(revPorActual) )
+                        misRec.setValue({
+                            fieldId: 'custrecord291',
+                            value: Math.ceil(revPorActual)
                         })
                     }
 
