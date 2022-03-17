@@ -58,7 +58,7 @@ define(['N/record', 'N/search'],
 
 
             var accountPeriod = searchResult.values.custrecord_ats_accounting_period.text
-            log.audit(`MIS ID:  ${id} | PROPERTY: ${property} | ACCOUNTING PERIOD: ${accountPeriod}`)
+         //   log.audit(`MIS ID:  ${id} | PROPERTY: ${property} | ACCOUNTING PERIOD: ${accountPeriod}`)
 
             var periodFinal = accountPeriod.substring(accountPeriod.length - 8, accountPeriod.length)
             var invoiceSearchObj = search.load({
@@ -112,142 +112,175 @@ define(['N/record', 'N/search'],
 
                     if (revCategory.includes('GP') === true) {
                         log.debug('GP')
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord2',
-                        //     value: roomSold
-                        // })
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord12',
-                        //     value: bedSold
-                        // })
+                        misRec.setValue({
+                            fieldId: 'custrecord32',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
 
-
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord2': roomSold,
-                        //         'custrecord12': bedSold,
-                        //
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
 
                     }
                     if (revCategory.includes('FB') === true) {
                         log.debug('FB')
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord4',
-                        //     value: roomSold
-                        // })
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord14',
-                        //     value: bedSold
-                        // })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord4': roomSold,
-                        //         'custrecord14': bedSold
-                        //
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        misRec.setValue({
+                            fieldId: 'custrecord35',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
                     }
                     if (revCategory.includes('HB') === true) {
                         log.debug('HB')
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord6',
-                        //     value: roomSold
-                        // })
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord16',
-                        //     value: bedSold
-                        // })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord6': roomSold,
-                        //         'custrecord16': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        misRec.setValue({
+                            fieldId: 'custrecord38',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
                     }
                     if (revCategory.includes('BB') === true) {
                         log.debug('BB')
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord8',
-                        //     value: roomSold
-                        // })
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord18',
-                        //     value: bedSold
-                        // })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord8': roomSold,
-                        //         'custrecord18': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        misRec.setValue({
+                            fieldId: 'custrecord41',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
 
                     }
                     if (revCategory.includes('DR') === true) {
                         log.debug('DR')
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord10',
-                        //     value: roomSold
-                        // })
-                        // misRec.setValue({
-                        //     fieldId: 'custrecord20',
-                        //     value: bedSold
-                        // })
-                        // var mis_sta_id = record.submitFields({
-                        //     type: 'customrecord_ats_mis_statistic',
-                        //     id: id,
-                        //     values: {
-                        //         'custrecord10': roomSold,
-                        //         'custrecord20': bedSold,
-                        //         'custrecord_ats_sta_room_sold': roomSoldTotal,
-                        //         'custrecord_ats_sta_bed_sold': bedSoldTotal
-                        //     },
-                        //     options: {
-                        //         enableSourcing: false,
-                        //         ignoreMandatoryFields: true
-                        //     }
-                        // });
-                        // log.debug('ID ', mis_sta_id)
+                        misRec.setValue({
+                            fieldId: 'custrecord44',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
+
                     }
+                    if (revCategory.includes('Room Other') === true) {
+                        log.debug('Room Other')
+                        misRec.setValue({
+                            fieldId: 'custrecord47',
+                            value: amount
+                        })
+                        roomsActualTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Food') === true) {
+                        log.debug('Food')
+                        misRec.setValue({
+                            fieldId: 'custrecord50',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Bar') === true) {
+                        log.debug('Bar')
+                        misRec.setValue({
+                            fieldId: 'custrecord53',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Extras') === true) {
+                        log.debug('Extras')
+                        misRec.setValue({
+                            fieldId: 'custrecord59',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Curio Shop') === true) {
+                        log.debug('Curio Shop')
+                        misRec.setValue({
+                            fieldId: 'custrecord62',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Flights and Transfers') === true) {
+                        log.debug('Flights and Transfers')
+                        misRec.setValue({
+                            fieldId: 'custrecord65',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Park & Conservancy fees') === true) {
+                        log.debug('Park & Conservancy fees')
+                        misRec.setValue({
+                            fieldId: 'custrecord68',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Activities & Excursions') === true) {
+                        log.debug('Activities & Excursions')
+                        misRec.setValue({
+                            fieldId: 'custrecord56',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Spa') === true) {
+                        log.debug('Spa')
+                        misRec.setValue({
+                            fieldId: 'custrecord71',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Shanga') === true) {
+                        log.debug('Shanga')
+                        misRec.setValue({
+                            fieldId: 'custrecord74',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Conferences') === true) {
+                        log.debug('Conferences')
+                        misRec.setValue({
+                            fieldId: 'custrecord77',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+                    if (revCategory.includes('Tour Sales') === true) {
+                        log.debug('Tour Sales')
+                        misRec.setValue({
+                            fieldId: 'custrecord80',
+                            value: amount
+                        })
+                        extrasTotal += parseFloat(amount)
+
+                    }
+
 
 
                     return true;
 
                 });
+                try {
+                    misRec.setValue({
+                        fieldId: 'custrecord_ats_rev_room',
+                        value: roomsActualTotal
+                    })
 
+                    misRec.setValue({
+                        fieldId: 'custrecord_ats_rev_extras',
+                        value: extrasTotal
+                    })
+                } catch (e) {
+                    log.error(e.message, id)
+                }
                 //
                 // log.debug('Room Sold Total', roomSoldTotal)
                 // log.debug('Bed Sold Total', bedSoldTotal)
@@ -313,18 +346,19 @@ define(['N/record', 'N/search'],
                 //
                 //
                 // var staId
-                // if (misRec) {
-                //     try {
-                //         staId = misRec.save({
-                //             ignoreMandatoryFields: true
-                //         });
-                //     } catch (e) {
-                //         log.error(e.message, id)
-                //     }
-                //
-                //
-                // }
-                // log.audit(' Statisitc Record updated ', staId)
+                log.debug(`Extras and Rooms Total`, `${roomsActualTotal} , ${extrasTotal}`  )
+                if (misRec) {
+                    try {
+                        staId = misRec.save({
+                            ignoreMandatoryFields: true
+                        });
+                    } catch (e) {
+                        log.error(e.message, id)
+                    }
+
+
+                }
+                log.audit(' Statisitc Record updated ', staId)
             }
 
 
