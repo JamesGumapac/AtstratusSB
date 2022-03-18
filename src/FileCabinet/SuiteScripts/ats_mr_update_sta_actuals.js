@@ -350,8 +350,11 @@ define(['N/record', 'N/search'],
                     var roomOccupancyActual = 0.00;
                     var roomOccupancyBduget = 0.00;
                     var roomOccupancyForecast = 0.00;
+                    var revParActual = 0
                     revParActual = revRoomsActualTotal/roomsAvailableActual
-                    if(revParActual > 0){
+                    var isInfinityRevPar =  isFinite(revParActual)
+
+                    if(revParActual > 0 && isInfinityRevPar == true){
                       //  log.audit('revPar Actual', Math.ceil(revParActual) )
                         misRec.setValue({
                             fieldId: 'custrecord288',
@@ -361,7 +364,7 @@ define(['N/record', 'N/search'],
                     log.audit('Rev GR and Rev Tour Sale', `${revGrossRevenue}, ${revTourSalesActual} `)
                     revPorActual = revGrossRevenue - revTourSalesActual
                     if(revPorActual > 0){
-                        log.audit('revPor Actual', Math.ceil(revPorActual) )
+                     //   log.audit('revPor Actual', Math.ceil(revPorActual) )
                         misRec.setValue({
                             fieldId: 'custrecord291',
                             value: Math.ceil(revPorActual)
@@ -369,40 +372,16 @@ define(['N/record', 'N/search'],
                     }
 
                     roomOccupancyActual = (roomSoldActual / roomsAvailableActual) * 100
-                    //   log.audit('Room occupancy', roomOccupancyActual)
-                    if (roomOccupancyActual != null) {
+                    var isInfinityRoomOccupanyActual =  isFinite(roomOccupancyActual)
+                    log.audit('roomOccupancyActual', `${roomOccupancyActual} | ${isInfinityRoomOccupanyActual}  | ${misRec.id}`)
+                    if (roomOccupancyActual > 0 && isInfinityRoomOccupanyActual == true) {
                         misRec.setValue({
                             fieldId: 'custrecord_ats_sta_room_occupancy',
                             value: roomOccupancyActual.toFixed(2)
                         })
                     }
 
-                    // set Room Occupancy Budget
-                    var roomSoldBudget = 0
-                    var roomsAvailableBudget = 0
-                    roomSoldBudget = misRec.getValue('custrecord85')
-                    roomsAvailableBudget = misRec.getValue('custrecord84')
-                    roomOccupancyBduget = (roomSoldBudget / roomsAvailableBudget) * 100
-                    log.debug('Room occupancy Budget', roomOccupancyBduget)
-                    if (roomOccupancyBduget != null) {
-                        misRec.setValue({
-                            fieldId: 'custrecord245',
-                            value: roomOccupancyBduget.toFixed(2)
-                        })
-                    }
-                    // set value for forecast room occupancy
-                    var roomSoldForecast = 0
-                    var roomsAvailableForecast = 0
-                    roomSoldForecast = misRec.getValue('custrecord243')
-                    roomsAvailableForecast = misRec.getValue('custrecord252')
-                    roomOccupancyForecast = (roomSoldForecast / roomsAvailableForecast) * 100
-                    log.debug('Room occupancy', roomOccupancyForecast)
-                    if (roomOccupancyForecast != null) {
-                        misRec.setValue({
-                            fieldId: 'custrecord246',
-                            value: roomOccupancyForecast.toFixed(2)
-                        })
-                    }
+
 
                 } catch (e) {
                     log.error(e.message, id)
